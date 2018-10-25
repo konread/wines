@@ -25,3 +25,22 @@ normalize <- function(x) {
 
 # normalizuje wszystkie kolumny bo sa atrybutami, pomijam pierwsza kolumne bo jest numerem grupy
 shuffledWineNormalized <- as.data.frame(lapply(shuffledWine[, 2:ncol(shuffledWine)], normalize))
+
+#
+wineTrainning <- shuffledWineNormalized[1:119,]
+wineTesting <- shuffledWineNormalized[120:178,]
+
+wineTrainningSource <-shuffledWine[1:119,1]
+wineTestingSource <- shuffledWine[120:178,1]
+
+require(class)
+
+# knn(train, test, cl, k = 1, l = 0, prob = FALSE, use.all = TRUE)
+# train -- maciez lub lista wektorow przypadkow treningowych
+# test -- maciez lub lista wektorow przypadkow testowych
+# cl -- wspolczynnik klasyfikacji zbioru treningowego
+# k -- liczba rozwazanych sasiadow
+# l -- minimalne g³osowanie na podjêcie ostatecznej decyzji, w przeciwnym razie w¹tpienie
+
+result <- knn(wineTrainning, wineTesting, wineTrainningSource, k = 5)
+table(result, wineTestingSource)
