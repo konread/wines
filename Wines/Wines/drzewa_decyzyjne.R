@@ -24,7 +24,6 @@ randomValues <- runif(nrow(wine))
 '
 przetasowuje wiersze tabeli "wine" wedlug tabeli "randomValues"
 '
-
 shuffledWine = wine[order(randomValues),]
 
 '
@@ -32,7 +31,6 @@ normalizacja, czyli przeskalowanie wartosci do wartosci odpowiadajacej przedzial
 w tym przypdaku funkcja przyjmuje wektor wartosci i odpowiednio je przeskalowuje
 np. normalize(c(10,20,30,40,50)) -> (0.00, 0.25, 0.50, 0.75, 1.0)
 '
-
 normalize <- function(x) {
     return ((x - min(x)) / (max(x) - min(x)))
 }
@@ -40,16 +38,15 @@ normalize <- function(x) {
 '
 normalizuje wszystkie kolumny bo sa atrybutami, pomijam pierwsza kolumne bo jest numerem grupy
 '
-
 # zbiór przetasowany
-# shuffledWineNormalized <- as.data.frame(lapply(shuffledWine[, 2:ncol(shuffledWine)], normalize))
+ shuffledWineNormalized <- as.data.frame(lapply(shuffledWine[, 2:ncol(shuffledWine)], normalize))
 
 # zbiór nie przetasowany
- shuffledWineNormalized <- as.data.frame(lapply(wine[, 2:ncol(wine)], normalize))
+# shuffledWineNormalized <- as.data.frame(lapply(wine[, 2:ncol(wine)], normalize))
 
 # powiêkszony zbiór ucz¹cy
-# wineTrainning <- shuffledWineNormalized[1:150,]
-# wineTesting <- shuffledWineNormalized[151:178,]
+ wineTrainning <- shuffledWineNormalized[1:150,]
+ wineTesting <- shuffledWineNormalized[151:178,]
 
 # równe czêœci
 # wineTrainning <- shuffledWineNormalized[1:89,]
@@ -60,12 +57,12 @@ normalizuje wszystkie kolumny bo sa atrybutami, pomijam pierwsza kolumne bo jest
 # wineTesting <- shuffledWineNormalized[24:178,]
 
 # dane nie znormalizowane
- wineTrainning <- wine[1:150, 2:14]
- wineTesting <- wine[151:178, 2:14]
+# wineTrainning <- wine[1:150, 2:14]
+# wineTesting <- wine[151:178, 2:14]
 
 # powiêkszony zbiór ucz¹cy
-# wineTrainningSource <- shuffledWine[1:150, 1]
-# wineTestingSource <- shuffledWine[151:178, 1]
+ wineTrainningSource <- shuffledWine[1:150, 1]
+ wineTestingSource <- shuffledWine[151:178, 1]
 
 # równe czêœci
 # wineTrainningSource <- shuffledWine[1:89, 1]
@@ -76,42 +73,20 @@ normalizuje wszystkie kolumny bo sa atrybutami, pomijam pierwsza kolumne bo jest
 # wineTestingSource <- shuffledWine[24:178, 1]
 
 # dane nie znormalizowane
- wineTrainningSource <- wine[1:150, 1]
- wineTestingSource <- wine[151:178, 1]
+# wineTrainningSource <- wine[1:150, 1]
+# wineTestingSource <- wine[151:178, 1]
+
+training <- cbind(wineTrainning, wineTrainningSource)
+testing <- cbind(wineTesting, wineTestingSource)
 
 require(class)
 
-'
-knn(train, test, cl, k = 1, l = 0, prob = FALSE, use.all = TRUE)
-train -- maciez lub lista wektorow przypadkow treningowych
-test -- maciez lub lista wektorow przypadkow testowych
-cl -- wspolczynnik klasyfikacji zbioru treningowego
-k -- liczba rozwazanych sasiadow
-l -- minimalne g³osowanie na podjêcie ostatecznej decyzji, w przeciwnym razie w¹tpienie
-'
+tree <- rpart(training$wineTrainningSource ~ ., data = training, method = 'class')
+tree.pred <- predict(tree, testing, type = "class")
+result <- table(testing$wineTestingSource, tree.pred)
 
 library(gmodels)
 
-knnWineTestPred <- knn(wineTrainning, wineTesting, wineTrainningSource, k = 13)
-#table(factor(knnWineTestPred))
-result <- table(wineTestingSource, knnWineTestPred)
-
-CrossTable(wineTestingSource, knnWineTestPred, prop.chisq = FALSE, prop.r = FALSE, prop.c = FALSE, prop.t = FALSE)
+CrossTable(testing$wineTestingSource, tree.pred, prop.chisq = FALSE, prop.r = FALSE, prop.c = FALSE, prop.t = FALSE)
 
 View(paste("Result [%]", round(sum(diag(result)) / sum(result) * 100), sep = " = "))
-
-#sum(knnWineTestPred == wineTestingSource) / length(wineTestingSource)*100
-#library(ggplot2)
-#ggplot(aes(shuffledWineNormalized$Alcohol, shuffledWineNormalized$Alkalinity_ash), data = shuffledWineNormalized) + geom_point(aes(color = factor(shuffledWine$Cultivar)))
-
-KnnTestPrediction <- list()
-accuracy <- numeric()
-
-for (k in 1:100) {
-   KnnTestPrediction[[k]] <- knn(wineTrainning, wineTesting, wineTrainningSource, k, prob = TRUE)
-   accuracy[k] <- sum(KnnTestPrediction[[k]] == wineTestingSource) / length(wineTestingSource) * 100
-}
-
-plot(accuracy, type = "b", col = "dodgerblue", cex = 1, pch = 20,
-     xlab = "k, liczba sasiadow", ylab = "% poprawnie sklasyfikowanych",
-     main = "Dokladnosc kontra sasiedzi")
