@@ -45,7 +45,7 @@ normalizuje wszystkie kolumny bo sa atrybutami, pomijam pierwsza kolumne bo jest
 # shuffledWineNormalized <- as.data.frame(lapply(shuffledWine[, 2:ncol(shuffledWine)], normalize))
 
 # zbiór nie przetasowany
- shuffledWineNormalized <- as.data.frame(lapply(wine[, 2:ncol(wine)], normalize))
+# shuffledWineNormalized <- as.data.frame(lapply(wine[, 2:ncol(wine)], normalize))
 
 # powiêkszony zbiór ucz¹cy
 # wineTrainning <- shuffledWineNormalized[1:150,]
@@ -59,9 +59,13 @@ normalizuje wszystkie kolumny bo sa atrybutami, pomijam pierwsza kolumne bo jest
 # wineTrainning <- shuffledWineNormalized[1:23,]
 # wineTesting <- shuffledWineNormalized[24:178,]
 
-# dane nie znormalizowane
- wineTrainning <- wine[1:150, 2:14]
- wineTesting <- wine[151:178, 2:14]
+# dane nieznormalizowane, nieprzetasowane
+# wineTrainning <- wine[1:150, 2:14]
+# wineTesting <- wine[151:178, 2:14]
+
+# dane nieznormalizowane, przetasowane
+# wineTrainning <- shuffledWine[1:150, 2:14]
+# wineTesting <- shuffledWine[151:178, 2:14]
 
 # powiêkszony zbiór ucz¹cy
 # wineTrainningSource <- shuffledWine[1:150, 1]
@@ -75,9 +79,13 @@ normalizuje wszystkie kolumny bo sa atrybutami, pomijam pierwsza kolumne bo jest
 # wineTrainningSource <- shuffledWine[1:23, 1]
 # wineTestingSource <- shuffledWine[24:178, 1]
 
-# dane nie znormalizowane
- wineTrainningSource <- wine[1:150, 1]
- wineTestingSource <- wine[151:178, 1]
+# dane nieznormalizowane, nieprzetasowane
+# wineTrainningSource <- wine[1:150, 1]
+# wineTestingSource <- wine[151:178, 1]
+
+# dane nieznormalizowane, przetasowane
+# wineTrainningSource <- shuffledWine[1:150, 1]
+# wineTestingSource <- shuffledWine[151:178, 1]
 
 require(class)
 
@@ -103,7 +111,7 @@ View(paste("Result [%]", round(sum(diag(result)) / sum(result) * 100), sep = " =
 #sum(knnWineTestPred == wineTestingSource) / length(wineTestingSource)*100
 #library(ggplot2)
 #ggplot(aes(shuffledWineNormalized$Alcohol, shuffledWineNormalized$Alkalinity_ash), data = shuffledWineNormalized) + geom_point(aes(color = factor(shuffledWine$Cultivar)))
-
+'
 KnnTestPrediction <- list()
 accuracy <- numeric()
 
@@ -115,3 +123,4 @@ for (k in 1:100) {
 plot(accuracy, type = "b", col = "dodgerblue", cex = 1, pch = 20,
      xlab = "k, liczba sasiadow", ylab = "% poprawnie sklasyfikowanych",
      main = "Dokladnosc kontra sasiedzi")
+'
