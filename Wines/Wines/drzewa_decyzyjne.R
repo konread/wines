@@ -38,54 +38,82 @@ normalize <- function(x) {
 '
 normalizuje wszystkie kolumny bo sa atrybutami, pomijam pierwsza kolumne bo jest numerem grupy
 '
-# zbiór przetasowany
- shuffledWineNormalized <- as.data.frame(lapply(shuffledWine[, 2:ncol(shuffledWine)], normalize))
+#---------------------------------------------------
+# normalizowanie, zbiór przetasowany
+#---------------------------------------------------
 
-# zbiór nie przetasowany
+shuffledWineNormalized <- as.data.frame(lapply(shuffledWine[, 2:ncol(shuffledWine)], normalize))
+
+#---------------------------------------------------
+# normalizowanie, zbiór nieprzetasowany
+#---------------------------------------------------
+
 # shuffledWineNormalized <- as.data.frame(lapply(wine[, 2:ncol(wine)], normalize))
 
-# powiêkszony zbiór ucz¹cy
- wineTrainning <- shuffledWineNormalized[1:150,]
- wineTesting <- shuffledWineNormalized[151:178,]
+#---------------------------------------------------
 
-# równe czêœci
+# wineTrainning <- shuffledWineNormalized[1:145,]
+# wineTesting <- shuffledWineNormalized[146:178,]
+
 # wineTrainning <- shuffledWineNormalized[1:89,]
 # wineTesting <- shuffledWineNormalized[90:178,]
 
-# powiêkszony zbiór testuj¹cy
-# wineTrainning <- shuffledWineNormalized[1:23,]
-# wineTesting <- shuffledWineNormalized[24:178,]
+# wineTrainning <- shuffledWineNormalized[1:33,]
+# wineTesting <- shuffledWineNormalized[34:178,]
 
-# dane nie znormalizowane
-# wineTrainning <- wine[1:150, 2:14]
-# wineTesting <- wine[151:178, 2:14]
+#---------------------------------------------------
 
-# powiêkszony zbiór ucz¹cy
- wineTrainningSource <- shuffledWine[1:150, 1]
- wineTestingSource <- shuffledWine[151:178, 1]
+# wineTrainning <- wine[1:145, 2:14]
+# wineTesting <- wine[146:178, 2:14]
 
-# równe czêœci
+# wineTrainning <- wine[1:89, 2:14]
+# wineTesting <- wine[90:178, 2:14]
+
+ wineTrainning <- wine[1:33, 2:14]
+ wineTesting <- wine[34:178, 2:14]
+
+#---------------------------------------------------
+
+# wineTrainning <- shuffledWine[1:145, 2:14]
+# wineTesting <- shuffledWine[146:178, 2:14]
+
+# wineTrainning <- shuffledWine[1:89, 2:14]
+# wineTesting <- shuffledWine[90:178, 2:14]
+
+# wineTrainning <- shuffledWine[1:33, 2:14]
+# wineTesting <- shuffledWine[34:178, 2:14]
+
+#---------------------------------------------------
+
+# wineTrainningSource <- shuffledWine[1:145, 1]
+# wineTestingSource <- shuffledWine[146:178, 1]
+
 # wineTrainningSource <- shuffledWine[1:89, 1]
 # wineTestingSource <- shuffledWine[90:178, 1]
 
-# powiêkszony zbiór testuj¹cy
-# wineTrainningSource <- shuffledWine[1:23, 1]
-# wineTestingSource <- shuffledWine[24:178, 1]
+# wineTrainningSource <- shuffledWine[1:33, 1]
+# wineTestingSource <- shuffledWine[34:178, 1]
 
-# dane nie znormalizowane
-# wineTrainningSource <- wine[1:150, 1]
-# wineTestingSource <- wine[151:178, 1]
+#---------------------------------------------------
+
+# wineTrainningSource <- wine[1:145, 1]
+# wineTestingSource <- wine[146:178, 1]
+
+# wineTrainningSource <- wine[1:89, 1]
+# wineTestingSource <- wine[90:178, 1]
+
+ wineTrainningSource <- wine[1:33, 1]
+ wineTestingSource <- wine[34:178, 1]
 
 training <- cbind(wineTrainning, wineTrainningSource)
 testing <- cbind(wineTesting, wineTestingSource)
 
 require(class)
+library(gmodels)
 
 tree <- rpart(training$wineTrainningSource ~ ., data = training, method = 'class')
 tree.pred <- predict(tree, testing, type = "class")
 result <- table(testing$wineTestingSource, tree.pred)
-
-library(gmodels)
 
 CrossTable(testing$wineTestingSource, tree.pred, prop.chisq = FALSE, prop.r = FALSE, prop.c = FALSE, prop.t = FALSE)
 

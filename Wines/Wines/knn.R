@@ -44,79 +44,68 @@ normalizuje wszystkie kolumny bo sa atrybutami, pomijam pierwsza kolumne bo jest
 # normalizowanie, zbiór przetasowany
 #---------------------------------------------------
 
-# shuffledWineNormalized <- as.data.frame(lapply(shuffledWine[, 2:ncol(shuffledWine)], normalize))
+ shuffledWineNormalized <- as.data.frame(lapply(shuffledWine[, 2:ncol(shuffledWine)], normalize))
 
 #---------------------------------------------------
 # normalizowanie, zbiór nieprzetasowany
 #---------------------------------------------------
 
- shuffledWineNormalized <- as.data.frame(lapply(wine[, 2:ncol(wine)], normalize))
+# shuffledWineNormalized <- as.data.frame(lapply(wine[, 2:ncol(wine)], normalize))
 
 #---------------------------------------------------
 
- wineTrainning <- shuffledWineNormalized[1:150,]
- wineTesting <- shuffledWineNormalized[151:178,]
+ wineTrainning <- shuffledWineNormalized[1:145,]
+ wineTesting <- shuffledWineNormalized[146:178,]
 
 # wineTrainning <- shuffledWineNormalized[1:89,]
 # wineTesting <- shuffledWineNormalized[90:178,]
 
-# wineTrainning <- shuffledWineNormalized[1:23,]
-# wineTesting <- shuffledWineNormalized[24:178,]
+# wineTrainning <- shuffledWineNormalized[1:33,]
+# wineTesting <- shuffledWineNormalized[34:178,]
 
 #---------------------------------------------------
 
-# wineTrainning <- wine[1:150, 2:14]
-# wineTesting <- wine[151:178, 2:14]
+# wineTrainning <- wine[1:145, 2:14]
+# wineTesting <- wine[146:178, 2:14]
 
 # wineTrainning <- wine[1:89, 2:14]
 # wineTesting <- wine[90:178, 2:14]
 
-# wineTrainning <- wine[1:23, 2:14]
-# wineTesting <- wine[24:178, 2:14]
+# wineTrainning <- wine[1:33, 2:14]
+# wineTesting <- wine[34:178, 2:14]
 
 #---------------------------------------------------
 
-# wineTrainning <- shuffledWine[1:150, 2:14]
-# wineTesting <- shuffledWine[151:178, 2:14]
+# wineTrainning <- shuffledWine[1:145, 2:14]
+# wineTesting <- shuffledWine[146:178, 2:14]
 
 # wineTrainning <- shuffledWine[1:89, 2:14]
 # wineTesting <- shuffledWine[90:178, 2:14]
 
-#wineTrainning <- shuffledWine[1:23, 2:14]
-#wineTesting <- shuffledWine[24:178, 2:14]
+# wineTrainning <- shuffledWine[1:33, 2:14]
+# wineTesting <- shuffledWine[34:178, 2:14]
 
 #---------------------------------------------------
 
-# wineTrainningSource <- shuffledWine[1:150, 1]
-# wineTestingSource <- shuffledWine[151:178, 1]
+ wineTrainningSource <- shuffledWine[1:145, 1]
+ wineTestingSource <- shuffledWine[146:178, 1]
 
 # wineTrainningSource <- shuffledWine[1:89, 1]
 # wineTestingSource <- shuffledWine[90:178, 1]
 
-# wineTrainningSource <- shuffledWine[1:23, 1]
-# wineTestingSource <- shuffledWine[24:178, 1]
+# wineTrainningSource <- shuffledWine[1:33, 1]
+# wineTestingSource <- shuffledWine[34:178, 1]
 
 #---------------------------------------------------
 
- wineTrainningSource <- wine[1:150, 1]
- wineTestingSource <- wine[151:178, 1]
+# wineTrainningSource <- wine[1:145, 1]
+# wineTestingSource <- wine[146:178, 1]
 
 # wineTrainningSource <- wine[1:89, 1]
 # wineTestingSource <- wine[90:178, 1]
 
-# wineTrainningSource <- wine[1:23, 1]
-# wineTestingSource <- wine[24:178, 1]
-
-#---------------------------------------------------
-
-# wineTrainningSource <- shuffledWine[1:150, 1]
-# wineTestingSource <- shuffledWine[151:178, 1]
-
-# wineTrainningSource <- shuffledWine[1:89, 1]
-# wineTestingSource <- shuffledWine[90:178, 1]
-
-# wineTrainningSource <- shuffledWine[1:23, 1]
-# wineTestingSource <- shuffledWine[24:178, 1]
+# wineTrainningSource <- wine[1:33, 1]
+# wineTestingSource <- wine[34:178, 1]
 
 
 require(class)
@@ -136,7 +125,11 @@ knnWineTestPred <- knn(wineTrainning, wineTesting, wineTrainningSource, k = 13)
 #table(factor(knnWineTestPred))
 result <- table(wineTestingSource, knnWineTestPred)
 
+print(length(wineTestingSource))
+print(length(knnWineTestPred))
+
 CrossTable(wineTestingSource, knnWineTestPred, prop.chisq = FALSE, prop.r = FALSE, prop.c = FALSE, prop.t = FALSE)
+
 
 View(paste("Result [%]", round(sum(diag(result)) / sum(result) * 100), sep = " = "))
 
