@@ -38,11 +38,12 @@ normalize <- function(x) {
 '
 normalizuje wszystkie kolumny bo sa atrybutami, pomijam pierwsza kolumne bo jest numerem grupy
 '
+
 #---------------------------------------------------
 # normalizowanie, zbiór przetasowany
 #---------------------------------------------------
 
-shuffledWineNormalized <- as.data.frame(lapply(shuffledWine[, 2:ncol(shuffledWine)], normalize))
+ shuffledWineNormalized <- as.data.frame(lapply(shuffledWine[, 2:ncol(shuffledWine)], normalize))
 
 #---------------------------------------------------
 # normalizowanie, zbiór nieprzetasowany
@@ -52,8 +53,8 @@ shuffledWineNormalized <- as.data.frame(lapply(shuffledWine[, 2:ncol(shuffledWin
 
 #---------------------------------------------------
 
-# wineTrainning <- shuffledWineNormalized[1:145,]
-# wineTesting <- shuffledWineNormalized[146:178,]
+ wineTrainning <- shuffledWineNormalized[1:145,]
+ wineTesting <- shuffledWineNormalized[146:178,]
 
 # wineTrainning <- shuffledWineNormalized[1:89,]
 # wineTesting <- shuffledWineNormalized[90:178,]
@@ -69,8 +70,8 @@ shuffledWineNormalized <- as.data.frame(lapply(shuffledWine[, 2:ncol(shuffledWin
 # wineTrainning <- wine[1:89, 2:14]
 # wineTesting <- wine[90:178, 2:14]
 
- wineTrainning <- wine[1:33, 2:14]
- wineTesting <- wine[34:178, 2:14]
+# wineTrainning <- wine[1:33, 2:14]
+# wineTesting <- wine[34:178, 2:14]
 
 #---------------------------------------------------
 
@@ -85,8 +86,8 @@ shuffledWineNormalized <- as.data.frame(lapply(shuffledWine[, 2:ncol(shuffledWin
 
 #---------------------------------------------------
 
-# wineTrainningSource <- shuffledWine[1:145, 1]
-# wineTestingSource <- shuffledWine[146:178, 1]
+ wineTrainningSource <- shuffledWine[1:145, 1]
+ wineTestingSource <- shuffledWine[146:178, 1]
 
 # wineTrainningSource <- shuffledWine[1:89, 1]
 # wineTestingSource <- shuffledWine[90:178, 1]
@@ -102,8 +103,9 @@ shuffledWineNormalized <- as.data.frame(lapply(shuffledWine[, 2:ncol(shuffledWin
 # wineTrainningSource <- wine[1:89, 1]
 # wineTestingSource <- wine[90:178, 1]
 
- wineTrainningSource <- wine[1:33, 1]
- wineTestingSource <- wine[34:178, 1]
+# wineTrainningSource <- wine[1:33, 1]
+# wineTestingSource <- wine[34:178, 1]
+
 
 training <- cbind(wineTrainning, wineTrainningSource)
 testing <- cbind(wineTesting, wineTestingSource)

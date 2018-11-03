@@ -54,14 +54,14 @@ normalizuje wszystkie kolumny bo sa atrybutami, pomijam pierwsza kolumne bo jest
 
 #---------------------------------------------------
 
- wineTrainning <- shuffledWineNormalized[1:145,]
- wineTesting <- shuffledWineNormalized[146:178,]
+# wineTrainning <- shuffledWineNormalized[1:145,]
+# wineTesting <- shuffledWineNormalized[146:178,]
 
 # wineTrainning <- shuffledWineNormalized[1:89,]
 # wineTesting <- shuffledWineNormalized[90:178,]
 
-# wineTrainning <- shuffledWineNormalized[1:33,]
-# wineTesting <- shuffledWineNormalized[34:178,]
+ wineTrainning <- shuffledWineNormalized[1:33,]
+ wineTesting <- shuffledWineNormalized[34:178,]
 
 #---------------------------------------------------
 
@@ -87,14 +87,14 @@ normalizuje wszystkie kolumny bo sa atrybutami, pomijam pierwsza kolumne bo jest
 
 #---------------------------------------------------
 
- wineTrainningSource <- shuffledWine[1:145, 1]
- wineTestingSource <- shuffledWine[146:178, 1]
+# wineTrainningSource <- shuffledWine[1:145, 1]
+# wineTestingSource <- shuffledWine[146:178, 1]
 
 # wineTrainningSource <- shuffledWine[1:89, 1]
 # wineTestingSource <- shuffledWine[90:178, 1]
 
-# wineTrainningSource <- shuffledWine[1:33, 1]
-# wineTestingSource <- shuffledWine[34:178, 1]
+ wineTrainningSource <- shuffledWine[1:33, 1]
+ wineTestingSource <- shuffledWine[34:178, 1]
 
 #---------------------------------------------------
 
@@ -136,11 +136,11 @@ View(paste("Result [%]", round(sum(diag(result)) / sum(result) * 100), sep = " =
 #sum(knnWineTestPred == wineTestingSource) / length(wineTestingSource)*100
 #library(ggplot2)
 #ggplot(aes(shuffledWineNormalized$Alcohol, shuffledWineNormalized$Alkalinity_ash), data = shuffledWineNormalized) + geom_point(aes(color = factor(shuffledWine$Cultivar)))
-'
+
 KnnTestPrediction <- list()
 accuracy <- numeric()
 
-for (k in 1:100) {
+for (k in 1:30) {
    KnnTestPrediction[[k]] <- knn(wineTrainning, wineTesting, wineTrainningSource, k, prob = TRUE)
    accuracy[k] <- sum(KnnTestPrediction[[k]] == wineTestingSource) / length(wineTestingSource) * 100
 }
@@ -148,4 +148,3 @@ for (k in 1:100) {
 plot(accuracy, type = "b", col = "dodgerblue", cex = 1, pch = 20,
      xlab = "k, liczba sasiadow", ylab = "% poprawnie sklasyfikowanych",
      main = "Dokladnosc kontra sasiedzi")
-'
