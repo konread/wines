@@ -112,8 +112,22 @@ testing <- cbind(wineTesting, wineTestingSource)
 
 require(class)
 library(gmodels)
+library(rpart)
+library(rpart.plot)
 
-tree <- rpart(training$wineTrainningSource ~ ., data = training, method = 'class')
+'
+rpart(formula, data=, method=,control=) 
+
+formula - znajduje siê w formacie wynikowym ~ predictor1 + predictor2 + predictor3 + ect.
+data - okreœla ramkê danych
+method - "klasa" dla drzewa klasyfikacji, "anova" dla drzewa regresji
+control - opcjonalne parametry do kontrolowania wzrostu drzew. 
+          Na przyk³ad control = rpart.control (minsplit = 30, cp = 0,01) wymaga, aby minimalna liczba obserwacji w wêŸle wynosi³a 30 przed prób¹ podzia³u, 
+          a podzia³ musia³ zmniejszyæ ca³kowity brak dopasowania o wspó³czynnik 0,01 (wspó³czynnik z³o¿onoœci kosztów) przed prób¹ tzn. wartoœæ cp to koszt dodania wêz³a do drzewa im wy¿sze cp, tym mniejsze drzewo
+
+'
+
+tree <- rpart(training$wineTrainningSource ~ ., data = training, method = 'class', cp=0.05)
 tree.pred <- predict(tree, testing, type = "class")
 result <- table(testing$wineTestingSource, tree.pred)
 
