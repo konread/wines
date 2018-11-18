@@ -97,6 +97,14 @@ wineTestingSource <- shuffledWine[90:178, 1]'
 
 #-----------------------------------------------------------------------
 
+# type - okresla czy algorytm ma dzia³aæ jako np maszyna klasyfikujaca lub regresjii,
+#       przykladowe dostepne typy: C-classification, nu-classification, eps-regression
+# kernel - u¿ywane podczas treningu i przewidywania,
+#       dostepne typy jader: liniowy, wielomianowy, promieniowy, 
+# degree - stopien dla jadra wielomianu (domyslnie 3)
+# gamma - parametr wymagany dla wszystkich j¹der z wyj¹tkiem liniowych(domyœlnie:1 / (wymiar danych))
+# cost - Koszt naruszenia ograniczeñ (domyœlnie: 1) --- jest to "C" sta³a terminu regularyzacji w formule Lagrange'a.
+
 classifier1 = svm(formula = wineTrainningSource ~ ., data = wineTrainning, type = 'C-classification', kernel = 'radial')
 test_pred1 = predict(classifier1, type = 'response', newdata = wineTesting)
 CrossTable(wineTestingSource, test_pred1, prop.chisq = FALSE, prop.r = FALSE, prop.c = FALSE, prop.t = FALSE)
